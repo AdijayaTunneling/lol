@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ADIJAYA VPN Panel</title>
+  <meta name="description" content="Panel pengguna ADIJAYA VPN — Login, Dashboard, Order, Tools, Riwayat, Topup." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f6fbf8;           /* latar dasar putih kehijauan */
+      --card:#ffffff;         /* kartu putih */
+      --line:#e8efe9;         /* garis lembut */
+      --shadow:0 10px 25px rgba(17,122,60,.08);
+      --brand:#14a44d;        /* hijau utama */
+      --brand-600:#128c42;    /* hijau gelap */
+      --brand-100:#e9f9ef;    /* hijau muda */
+      --text:#0c1a12;         /* teks utama */
+      --muted:#5b6b61;        /* teks sekunder */
+      --danger:#e11d48;       /* merah */
+      --warn:#f59e0b;         /* kuning */
+      --radius:16px;          /* radius kartu */
+      --sidebar: #0f3f24;     /* latar sidebar */
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial}
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+    .container{max-width:1100px;margin:0 auto;padding:0 16px}/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:50;background:linear-gradient(180deg,#ffffff,#f7fdf9);border-bottom:1px solid var(--line)}
+.topbar-inner{height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800}
+.logo-badge{width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--brand),#26d07c);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:var(--shadow)}
+.logo small{font-weight:700;color:var(--muted)}
+.hamburger{width:36px;height:36px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;background:#fff;cursor:pointer}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:260px 1fr;gap:16px;max-width:1200px;margin:16px auto}
+
+/* SIDEBAR */
+.sidebar{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;box-shadow:var(--shadow);height:calc(100vh - 96px);position:sticky;top:72px;overflow:auto}
+.sb-title{font-weight:800;font-size:14px;color:#335245;padding:8px 10px}
+.menu{display:grid;gap:6px}
+.menu a{display:flex;align-items:center;gap:10px;padding:12px 12px;border-radius:12px;color:#173b29;font-weight:600}
+.menu a.active{background:var(--brand-100);color:var(--brand-600);border:1px solid #d6f3e0}
+.menu .ico{width:28px;height:28px;border-radius:8px;background:var(--brand-100);display:grid;place-items:center;border:1px solid #d6f3e0;font-weight:800;color:var(--brand-600)}
+
+/* CONTENT */
+.content{min-height:60vh}
+
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px}
+.card h2{margin:0 0 10px}
+
+.grid{display:grid;gap:16px}
+.grid.cols-2{grid-template-columns:1fr 1fr}
+.grid.cols-3{grid-template-columns:repeat(3,1fr)}
+
+.metric{background:var(--brand-100);border:1px solid #d6f3e0;border-radius:14px;padding:14px;text-align:center}
+.metric b{font-size:18px;display:block}
+.metric span{font-size:12px;color:var(--muted)}
+
+.pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:var(--brand-100);color:var(--brand-600);border:1px solid #d6f3e0;font-weight:700;font-size:12px}
+
+/* LOGIN CARD */
+.login-wrap{display:grid;place-items:center;min-height:calc(100vh - 56px);padding:24px}
+.login-card{max-width:420px;width:100%}
+.input{width:100%;height:44px;padding:0 12px;border-radius:12px;border:1px solid var(--line);outline:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 16px;border-radius:12px;border:1px solid var(--line);font-weight:700;background:#fff;cursor:pointer}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-600)}
+
+/* ALERT */
+.alert{display:flex;gap:10px;border-left:4px solid var(--brand);background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
+.alert.warn{border-left-color:var(--warn)}
+
+/* MOBILE */
+@media (max-width: 960px){
+  .layout{grid-template-columns:1fr}
+  .sidebar{position:fixed;inset:0 auto 0 0;transform:translateX(-100%);max-width:300px;height:100vh;border-radius:0;top:0;border-right:1px solid var(--line);z-index:60}
+  .sidebar.open{transform:translateX(0)}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.28);backdrop-filter:blur(2px);display:none;z-index:55}
+  .overlay.show{display:block}
+}
+
+  </style>
+</head>
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo">
+        <div class="logo-badge">AV</div>
+        <div>
+          ADIJAYA VPN<br>
+          <small>Panel Pengguna</small>
+        </div>
+      </div>
+      <div class="hamburger" id="btnMenu" aria-label="Buka menu" title="Menu">
+        ☰
+      </div>
+    </div>
+  </header>  <!-- LOGIN VIEW -->  <main id="view-login" class="login-wrap">
+    <div class="card login-card">
+      <div class="pill">Masuk ke Akun</div>
+      <h2 style="margin:10px 0 4px">Login</h2>
+      <p style="margin:0 0 14px;color:var(--muted)">Gunakan username & password Anda untuk masuk.</p>
+      <div class="grid" style="gap:10px">
+        <input class="input" id="username" placeholder="Username" />
+        <input class="input" id="password" placeholder="Password" type="password" />
+        <button class="btn primary" onclick="fakeLogin()">Login</button>
+      </div>
+      <p style="margin:12px 0 0;color:var(--muted);font-size:14px">Belum punya akun? <a href="#" onclick="alert('Halaman pendaftaran menyusul.')" style="color:var(--brand-600);font-weight:700">Daftar Sekarang</a></p>
+    </div>
+  </main>  <!-- DASHBOARD VIEW -->  <div id="view-dashboard" style="display:none">
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sb-title">MENU</div>
+        <nav class="menu">
+          <a href="#" class="active"><span class="ico">🏠</span>Dashboard</a>
+          <a href="#"><span class="ico">📦</span>Order & Perpanjang</a>
+          <a href="#"><span class="ico">🔐</span>Tembak Paket OTP</a>
+          <a href="#"><span class="ico">🤝</span>Tembak Paket Akrab</a>
+          <a href="#"><span class="ico">📊</span>Cek Kuota XL & Axis V4</a>
+          <a href="#"><span class="ico">🧾</span>Riwayat</a>
+          <a href="#"><span class="ico">🧰</span>Tools</a>
+          <a href="#"><span class="ico">💳</span>Topup Saldo</a>
+          <a href="#" onclick="fakeLogout()"><span class="ico">🚪</span>Logout</a>
+        </nav>
+      </aside><!-- CONTENT -->
+  <section class="content">
+    <div class="container" style="padding:0 8px 24px">
+      <div class="grid" style="gap:16px">
+        <div class="card" style="padding:18px">
+          <h1 style="margin:0 0 6px">Dashboard</h1>
+          <div class="grid cols-3">
+            <div class="metric"><b id="saldo">Saldo: Rp 0</b><span>Total saldo akun</span></div>
+            <div class="metric"><b id="trx">Transaksi: 0</b><span>Total transaksi</span></div>
+            <div class="metric" style="background:#14a44d10;border-color:#bfead0"><b id="user">Username: -</b><span>Nama pengguna</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="alert">
+            <div style="font-size:22px">📢</div>
+            <div>
+              <h3 style="margin:0 0 4px">Pengumuman</h3>
+              <p style="margin:0;color:var(--muted)">Selamat datang di <b>ADIJAYA VPN PANEL</b>. Klik ikon ☰ di kiri atas (mobile) untuk membuka menu dan mulai menggunakan layanan kami.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="alert warn">
+            <div style="font-size:22px">⚠️</div>
+            <div>
+              <h3 style="margin:0 0 4px">Pengumuman</h3>
+              <p style="margin:0;color:var(--muted)">Pastikan untuk tidak membagikan akun Anda ke pihak lain.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<div class="overlay" id="overlay" onclick="toggleSidebar(false)"></div>
+
+  </div>  <script>
+    const viewLogin = document.getElementById('view-login');
+    const viewDash = document.getElementById('view-dashboard');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+    const btnMenu = document.getElementById('btnMenu');
+
+    function toggleSidebar(open){
+      const isMobile = matchMedia('(max-width:960px)').matches;
+      if(!isMobile) return;
+      if(open){
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+      }else{
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      }
+    }
+    btnMenu.addEventListener('click', ()=>{
+      const isMobile = matchMedia('(max-width:960px)').matches;
+      if(viewDash.style.display !== 'none' && isMobile){
+        toggleSidebar(!sidebar.classList.contains('open'));
+      }
+    });
+
+    function fakeLogin(){
+      const u = document.getElementById('username').value || 'AdijayaVpn';
+      document.getElementById('user').textContent = 'Username: ' + u;
+      viewLogin.style.display = 'none';
+      viewDash.style.display = 'block';
+      // Close sidebar on load mobile
+      toggleSidebar(false);
+      // Scroll top
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    function fakeLogout(){
+      viewDash.style.display = 'none';
+      viewLogin.style.display = 'grid';
+      toggleSidebar(false);
+    }
+
+    // Close sidebar when resizing to desktop
+    window.addEventListener('resize', ()=>{
+      if(!matchMedia('(max-width:960px)').matches){
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      }
+    });
+  </script></body>
+          </html>
